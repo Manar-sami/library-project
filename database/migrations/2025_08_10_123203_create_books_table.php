@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->foreignId('author_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('author_id')->constrained()->onDelete('cascade');//delete
             $table->foreignId('library_id')->constrained()->onDelete('cascade');
             $table->decimal('price', 8, 2)->default(0);
             $table->string('cover_path')->nullable();

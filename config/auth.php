@@ -36,6 +36,11 @@ return [
     */
 
     'guards' => [
+         'author' => [
+        'driver' => 'session',
+        'provider' => 'authors',
+    ],
+
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -60,6 +65,10 @@ return [
     */
 
     'providers' => [
+         'authors' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Author::class,
+    ],
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),

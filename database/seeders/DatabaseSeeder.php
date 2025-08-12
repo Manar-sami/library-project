@@ -2,22 +2,27 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\Library;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+
+
     public function run(): void
     {
-        // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $library = Library::factory()->create();
+
+
+        $authors = Author::factory(3)->create();
+
+        Book::factory(50)->make()->each(function($book) use ($authors, $library) {
+            $book->author_id = $authors->random()->id;
+            $book->library_id = $library->id;
+            $book->save();
+        });
     }
 }
