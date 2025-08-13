@@ -17,7 +17,7 @@
     <form method="POST" action="{{ route('author.login.submit') }}">
         @csrf
         <label>البريد الإلكتروني:</label>
-        <input type="email" name="email" required autofocus><br><br>
+        <input type="text" name="code" required autofocus><br><br>
 
         <label>كلمة المرور:</label>
         <input type="password" name="password" required><br><br>

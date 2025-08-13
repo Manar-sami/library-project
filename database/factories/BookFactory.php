@@ -19,7 +19,10 @@ class BookFactory extends Factory
         return [
          'title' => $this->faker->sentence(3),
 
-        'library_id' => Library::inRandomOrder()->first()->id ?? Library::factory(),
+       'library_id' => Library::count()
+        ? Library::inRandomOrder()->first()->id
+        : Library::factory()->create()->id,
+
         'price' => $this->faker->randomFloat(2, 5, 100),
         'cover_path' => null,
         ];
