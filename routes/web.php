@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\AuthorDashboardController;
 use App\Http\Controllers\Auth\AuthorLoginController;
+use App\Http\Controllers\MainAuthController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -36,3 +37,11 @@ Route::get('/author/dashboard', [AuthorDashboardController::class, 'index'])
     Route::get('login', function () {
     return redirect()->route('author.login');
 })->name('login');
+
+Route::get('/', [MainAuthController::class, 'showLogin'])->name('main.login');
+
+
+Route::post('/login', [MainAuthController::class, 'login'])->name('main.login.post');
+
+
+
