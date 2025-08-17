@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Author;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthorLoginController extends Controller
 {
@@ -15,36 +17,35 @@ class AuthorLoginController extends Controller
 
     public function showLoginForm()
     {
+
         return view('authors.author-login');
     }
 
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'code' => ['required'],
-            'password' => ['required'],
+            'email'    => 'required|string|email',
+            'password' => 'required|string',
         ]);
 
-        if (Auth::guard('author')->attempt($credentials, $request->filled('remember'))) {
-            $request->session()->regenerate();
-             return redirect()->route('author.dashboard');
+        $author = Author::where('email', $credentials['email'])->first();
+
+        if ($author && Hash::check($credentials['password'], $author->password)) {
+            Auth::login($author);
+            return redirect()->route('books.create')->with('success', 'تم تسجيل الدخول بنجاح');
         }
 
         return back()->withErrors([
-            'code' => 'بيانات الدخول غير صحيحة.',
-        ])->onlyInput('code');
+            'email' => 'بيانات الدخول غير صحيحة.',
+        ])->onlyInput('email');
     }
 
     public function logout(Request $request)
     {
-        Auth::guard('author')->logout();
-
+        Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/author/login');
+        return redirect()->route('author.login')->with('success', 'تم تسجيل الخروج');
     }
-
-
-
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Author Login</title>
+    <title>تسجيل مؤلف جديد</title>
     <style>
         body {
             margin: 0;
@@ -14,11 +14,11 @@
             height: 100vh;
         }
 
-        .login-box {
+        .register-box {
             background: #fff;
             padding: 30px;
             border-radius: 12px;
-            width: 350px;
+            width: 400px;
             text-align: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
@@ -66,29 +66,42 @@
     </style>
 </head>
 <body>
-    <div class="login-box">
-        <h2>تسجيل دخول المؤلف</h2>
+    <div class="register-box">
+        <h2>تسجيل مؤلف جديد</h2>
 
-        @if($errors->any())
+        @if ($errors->any())
             <div class="error">
-                {{ $errors->first() }}
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         @endif
 
-        <form method="POST" action="{{ route('author.login') }}">
+        <form method="POST" action="{{ route('register.submit') }}">
             @csrf
-            <label>:البريد الإلكتروني</label>
-              <input type="email" name="email" required autofocus>
 
+            <label>الاسم:</label>
+            <input type="text" name="name" value="{{ old('name') }}" required>
 
-              <label>:كلمة المرور</label>
+            <label>رمز التعريف:</label>
+            <input type="text" name="code" value="{{ old('code') }}" required>
+
+            <label>البريد الإلكتروني:</label>
+            <input type="email" name="email" value="{{ old('email') }}" required>
+
+            <label>البلد:</label>
+            <input type="text" name="country" value="{{ old('country') }}" required>
+
+            <label>كلمة السر:</label>
             <input type="password" name="password" required>
 
-            <button type="submit">دخول</button>
-        </form>
-        <a href="{{ route('register.form') }}">انشاء حساب</a>
+            <label>تأكيد كلمة السر:</label>
+            <input type="password" name="password_confirmation" required>
 
+            <button type="submit">تسجيل</button>
+        </form>
     </div>
 </body>
 </html>
-

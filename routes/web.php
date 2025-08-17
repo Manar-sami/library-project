@@ -7,6 +7,7 @@ use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\AuthorDashboardController;
 use App\Http\Controllers\Auth\AuthorLoginController;
 use App\Http\Controllers\MainAuthController;
+use App\Http\Controllers\Auth\RegisterController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -38,10 +39,13 @@ Route::get('/author/dashboard', [AuthorDashboardController::class, 'index'])
     return redirect()->route('author.login');
 })->name('login');
 
-Route::get('/', [MainAuthController::class, 'showLogin'])->name('main.login');
+// Route::get('/', [MainAuthController::class, 'showLogin'])->name('main.login');
 
 
-Route::post('/login', [MainAuthController::class, 'login'])->name('main.login.post');
+Route::post('/', [MainAuthController::class, 'login'])->name('main.login.post');
+
+
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.form');
 
 
 

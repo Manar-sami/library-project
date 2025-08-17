@@ -4,7 +4,7 @@
 <h1>إضافة مؤلف جديد</h1>
 
 @if ($errors->any())
-    <div style="color: red;">
+    <div style="color: red; margin-bottom: 15px;">
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -34,6 +34,21 @@
     <div>
         <label>عدد الكتب:</label><br>
         <input type="number" name="books_count" value="{{ old('books_count', 0) }}" min="0">
+    </div>
+
+    <div>
+        <label>البريد الإلكتروني:</label><br>
+        <input type="email" name="email" value="{{ old('email') }}" required>
+    </div>
+
+    <div>
+        <label>كلمة المرور:</label><br>
+        <input type="password" name="password" required>
+    </div>
+
+    <div>
+        <label>تأكيد كلمة المرور:</label><br>
+        <input type="password" name="password_confirmation" required>
     </div>
 
     <button type="submit">حفظ</button>

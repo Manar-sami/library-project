@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\AuthorRequest;
 class AuthorController extends Controller
 {
     public function index()
@@ -18,14 +20,11 @@ class AuthorController extends Controller
         return view('authors.create');
     }
 
-    public function store(Request $request)
+    public function store(AuthorRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:authors,code',
-            'country' => 'required|string|max:100',
-            'books_count' => 'nullable|integer|min:0',
-        ]);
+
+          $data= $request->validate();
+        $data['password'] = Hash::make($data['password']);
 
         Author::create($data);
 
@@ -37,14 +36,15 @@ class AuthorController extends Controller
         return view('authors.edit', compact('author'));
     }
 
-    public function update(Request $request, Author $author)
+    public function update(AuthorRequest $request, Author $author)
     {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'code' => "required|string|max:50|unique:authors,code,{$author->id}",
-            'country' => 'required|string|max:100',
-            'books_count' => 'nullable|integer|min:0',
-        ]);
+        $data = $request->validate();
+
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
 
         $author->update($data);
 
@@ -55,5 +55,38 @@ class AuthorController extends Controller
     {
         $author->delete();
         return redirect()->route('authors.index')->with('success', 'Author deleted successfully');
+    }
+
+    public function loginForm()
+    {
+        return view('authors.login');
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email'    => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        $author = Author::where('email', $credentials['email'])->first();
+
+        if ($author && Hash::check($credentials['password'], $author->password)) {
+            Auth::login($author);
+            return redirect()->route('authors.index')->with('success', 'تم تسجيل الدخول بنجاح');
+        }
+
+        return back()->withErrors([
+            'email' => 'بيانات الدخول غير صحيحة.',
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('authors.loginForm')->with('success', 'تم تسجيل الخروج');
     }
 }

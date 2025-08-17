@@ -22,6 +22,8 @@ class AuthorFactory extends Factory
         'name' => $this->faker->name(),
         'country' => $this->faker->country(),
         'books_count' => 0,
+         'email' => $this->faker->unique()->safeEmail(),
+           'password' => bcrypt('password123'),
         ];
     }
 }

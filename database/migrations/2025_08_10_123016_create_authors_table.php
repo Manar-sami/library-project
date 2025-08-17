@@ -17,7 +17,10 @@ return new class extends Migration
         $table->string('name');
         $table->string('country');
         $table->integer('books_count')->default(0);
+        $table->string('email')->unique();
+        $table->string('password');
         $table->timestamps();
+        $table->softDeletes();
         });
     }
 
