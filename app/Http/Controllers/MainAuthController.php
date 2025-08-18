@@ -16,7 +16,7 @@ class MainAuthController extends Controller
 
         if (Auth::attempt($credentials)) {
 
-            return redirect()->route('home');
+              return redirect('/admin');
         }
 
         return back()->withErrors([
