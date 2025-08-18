@@ -14,7 +14,7 @@ Route::get('/', function () {
 
 
 Route::resource('books', BookController::class);
-Route::resource('authors', AuthorController::class);
+// Route::resource('authors', AuthorController::class);
 Route::resource('libraries', LibraryController::class);
 
 
@@ -24,14 +24,14 @@ Route::post('author/login', [AuthorLoginController::class, 'login'])->name('auth
 Route::post('author/logout', [AuthorLoginController::class, 'logout'])->name('author.logout');
 
 
-Route::get('/author/dashboard', function() {
-    return 'مرحبا بك في لوحة تحكم المؤلف';
-})->middleware('auth:author');
+// Route::get('/author/dashboard', function() {
+//     return 'مرحبا بك في لوحة تحكم المؤلف';
+// })->middleware('auth:author');
 
 
-Route::get('/author/dashboard', [AuthorDashboardController::class, 'index'])
-    ->name('author.dashboard')
-    ->middleware('auth:author');
+// Route::get('/author/dashboard', [AuthorDashboardController::class, 'index'])
+//     ->name('author.dashboard')
+//     ->middleware('auth:author');
 
 
 
@@ -39,7 +39,7 @@ Route::get('/author/dashboard', [AuthorDashboardController::class, 'index'])
     return redirect()->route('author.login');
 })->name('login');
 
-// Route::get('/', [MainAuthController::class, 'showLogin'])->name('main.login');
+Route::get('/', [MainAuthController::class, 'showLogin'])->name('main.login');
 
 
 Route::post('/', [MainAuthController::class, 'login'])->name('main.login.post');
@@ -49,3 +49,9 @@ Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->na
 
 
 
+Route::middleware(['auth:author'])->group(function () {
+    Route::resource('authors', AuthorController::class);
+
+    Route::get('/author/dashboard', [AuthorDashboardController::class, 'index'])
+        ->name('author.dashboard');
+});
