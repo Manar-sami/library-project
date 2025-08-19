@@ -8,6 +8,9 @@ use App\Http\Controllers\AuthorDashboardController;
 use App\Http\Controllers\Auth\AuthorLoginController;
 use App\Http\Controllers\MainAuthController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Api\BookApiController;
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -53,4 +56,8 @@ Route::middleware(['auth:author'])->group(function () {
 
     Route::get('/author/dashboard', [AuthorDashboardController::class, 'index'])
         ->name('author.dashboard');
+});
+Route::prefix('api')->group(function () {
+    Route::get('/books', [BookApiController::class, 'index']);
+    Route::get('/books/{id}', [BookApiController::class, 'show']);
 });

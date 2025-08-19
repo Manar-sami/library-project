@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
 
         $authors = Author::factory(3)->create();
 
-        Book::factory(50)->make()->each(function($book) use ($authors, $library) {
+        Book::factory(50)->create()->each(function($book) use ($authors, $library) {
             $book->author_id = $authors->random()->id;
             $book->library_id = $library->id;
             $book->save();
