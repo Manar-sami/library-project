@@ -46,8 +46,7 @@ Route::post('/', [MainAuthController::class, 'login'])->name('main.login.post');
 
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register.form');
-
-
+Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 
 Route::middleware(['auth:author'])->group(function () {
     Route::resource('authors', AuthorController::class);
